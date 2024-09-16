@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        form { margin-bottom: 20px; }
+        input[type="text"], input[type="number"] { margin-right: 10px; padding: 5px; }
+        input[type="submit"] { padding: 5px 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Product Search</h1>
+    <form method="POST" action="{{ url_for('index') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.query.label }} {{ form.query() }}
+            {% if form.query.errors %}
+                <span class="error">{{ form.query.errors[0] }}</span>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.min_price.label }} {{ form.min_price() }}
+            {% if form.min_price.errors %}
+                <span class="error">{{ form.min_price.errors[0] }}</span>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.max_price.label }} {{ form.max_price() }}
+            {% if form.max_price.errors %}
+                <span class="error">{{ form.max_price.errors[0] }}</span>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.category.label }} {{ form.category() }}
+            {% if form.category.errors %}
+                <span class="error">{{ form.category.errors[0] }}</span>
+            {% endif %}
+        </div>
+        {{ form.submit() }}
+    </form>
+
+    {% if products %}
+        <h2>Results:</h2>
+        <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - ${{ product.price }} ({{ product.category }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No products found matching your criteria.</p>
+    {% endif %}
+</body>
+</html>
